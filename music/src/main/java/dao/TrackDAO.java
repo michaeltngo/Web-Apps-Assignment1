@@ -30,9 +30,10 @@ public class TrackDAO {
         Track track = new Track(id);
         //TODO: Implement this CRUD function
 
-        this.jdbcTemplate.query(
-                "SELECT * FROM tracks", new Object[] { },
-                (rs, rowNum) -> new Track(rs.getInt("id"), rs.getString("title"), rs.getInt("album"))
+        track = this.jdbcTemplate.queryForObject(
+                "SELECT * FROM tracks WHERE id = ?",
+                new Object[]{track.getId()},
+                (rs, rowNum) -> new Track(rs.getInt("id"))
         );
         System.out.println("Track from getTrack: " + track);
         return track;
