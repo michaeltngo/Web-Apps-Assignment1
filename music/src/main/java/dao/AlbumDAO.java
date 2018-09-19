@@ -1,8 +1,12 @@
 package dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import model.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -15,13 +19,22 @@ public class AlbumDAO {
 
     public Album createAlbum(Album album){
         //TODO: Implement this CRUD function
+        String SQL = "INSERT INTO albums (id, title) values (?, ?)";
+        jdbcTemplate.update (SQL, album.getId(), album.getTitle());
+
+        System.out.println("Album created, id= " + album.getId() + " title= " +album.getTitle());
         return album;
     }
 
     public Album getAlbum(int id){
         Album album = new Album(id, "");
         //TODO: Implement this CRUD function
-        //Get album and set tracks using getTracksByAlbumId(id) in TracksDAO
+        this.jdbcTemplate.query(
+                "SELECT * FROM albums", new Object[] { },
+                (rs, rowNum) -> new Album(rs.getInt("id"), rs.getString("title"))
+        );
+        System.out.println("Album from getAlbum: " + album);
+
         return album;
     }
 
@@ -37,12 +50,23 @@ public class AlbumDAO {
 
     public Album updateAlbum(Album album){
         //TODO: Implement this CRUD function
+        String SQL = "update albums set id=?, title=? where id=?";
+        jdbcTemplate.update(SQL, album.getId(), album.getTitle(), album.getId());
+        System.out.println("Updated album with id = "
+                + album.getId() + ", title = " + album.getTitle());
+
         return album;
     }
 
     public boolean deleteAlbum(Album album){
         boolean success = false;
         //TODO: Implement this CRUD function
+        String SQL = "delete from albums where id = ?";
+        jdbcTemplate.update(SQL, album.getId());
+        System.out.println("Deleted Album with Title = "
+                + album.getTitle() + ", AlbumId = "
+                + album.getId());
+
         return success;
     }
 

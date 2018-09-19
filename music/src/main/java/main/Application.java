@@ -41,12 +41,22 @@ public class Application implements CommandLineRunner {
         trackDAO.createTrack(new Track("Track 2", 42));
         trackDAO.createTrack(new Track ("Track 3", 42));
 
+        trackDAO.getTrack(1);
+        trackDAO.updateTrack(new Track(1, "UPDATE", 42));
+        trackDAO.getAllTracks();
+        trackDAO.deleteTrack(new Track( 2));
+
         jdbcTemplate.execute("DROP TABLE IF EXISTS albums");
         jdbcTemplate.execute("CREATE TABLE albums(" +
                 "id INT, title VARCHAR(255))");
 
         albumDAO.createAlbum(new Album (42, "Album 1"));
         albumDAO.getAllAlbums().forEach(album -> log.info(album.toString()));
+        albumDAO.updateAlbum(new Album(42, "UPDATE"));
+        albumDAO.createAlbum(new Album (43, "Album 2"));
+        albumDAO.deleteAlbum(new Album( 43, "Album 2"));
+
+
 
     }
 }
