@@ -25,16 +25,16 @@ public class AlbumDAO {
         System.out.println("Album created, id= " + album.getId() + " title= " +album.getTitle());
         return album;
     }
-
-    public Album getAlbum(int id){
+    
+   public Album getAlbum(int id){
         Album album = new Album(id, "");
         //TODO: Implement this CRUD function
-        this.jdbcTemplate.query(
-                "SELECT * FROM albums", new Object[] { },
+        album = this.jdbcTemplate.queryForObject(
+                "SELECT * FROM album WHERE id = ?",
+                new Object[]{album.getId()},
                 (rs, rowNum) -> new Album(rs.getInt("id"), rs.getString("title"))
         );
-        System.out.println("Album from getAlbum: " + album);
-
+        System.out.println("Track from getTrack: " + album);
         return album;
     }
 
